@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <!-- Llama a script -->
+        <script type = "text/javascript" src = "archivos/script.js"></script>
+    </h:head>
+
+    <!-- Ejectua script -->
+    <h:body onload="habilita('formProducto:guardar', 'formProducto:modificar')">
+
+
+        <h:form id="formProducto">
+            <p:growl id="growl" life="2000" showDetail="true"/>
+            <p:panel header="Productos">
+
+
+                <h5>Nombre de Producto</h5>
+                <span class="ui-float-label">
+                    <p:inputText id="nombreProducto" value="#{beanProducto.nombreProducto}"/>
+                    <p:outputLabel for="@previous" value="Nombre Producto"/>
+                </span>
+                <h5>Cantidad</h5>
+                <span class="ui-float-label">
+                    <p:inputNumber id="cantidad" value="#{beanProducto.cantidad}" modifyValueOnWheel="false" />
+                    <p:outputLabel for="@previous"  value="Cantidad"/>
+                </span>
+                <h5>Precio</h5>
+                <span class="ui-float-label">
+                    <p:inputNumber id="precio" value="#{beanProducto.precio}" modifyValueOnWheel="false" />
+                    <p:outputLabel for="@previous"  value="Precio"/>
+                </span>
+                <p:commandButton id = "guardar" value="Guardar" update ="@form,tables" styleClass="rounded-button" oncomplete="habilita('formProducto:guardar', 'formProducto:modificar')" actionListener="#{beanProducto.insertar}" />
+                <p:commandButton id = "modificar" value="Modificar" update ="@form,tables" oncomplete="habilita('formProducto:guardar', 'formProducto:modificar')" styleClass="rounded-button ui-button-success" actionListener="#{beanProducto.modificar}" />
+            </p:panel>
+        </h:form>
+        <h:form id ="tables">
+
+            <div class="card">
+                <p:dataTable var="product" value="#{beanProducto.listaProducto}" rowsPerPageTemplate="5,10,15" paginator="true" rows="5">
+                    <p:column headerText="Producto" sortBy="#{product.nombreProducto}" filterBy="#{product.nombreProducto}">
+                        <h:outputText value="#{product.nombreProducto}" /> 
+                    </p:column>
+
+                    <p:column headerText="Cantidad" sortBy="#{product.cantidad}" filterBy="#{product.cantidad}">
+                        <h:outputText value="#{product.cantidad}" />
+                    </p:column>
+
+                    <p:column headerText="Precio" sortBy="#{product.precio}" filterBy="#{product.precio}">
+                        <h:outputText value="#{product.precio}" />
+                    </p:column>
+
+                    <p:column headerText="Modificar">
+                        <p:commandButton value="Modificar" update ="formProducto" styleClass="rounded-button ui-button-success" oncomplete="habilita('formProducto:modificar', 'formProducto:guardar')" action="#{beanProducto.seleccionarDatos(product)}" />
+                    </p:column>
+
+                    <p:column headerText="Anular">
+                        <p:commandButton value="Anular" update ="anular" styleClass="rounded-button" onclick="PF('dlg2').show()" actionListener="#{beanProducto.seleccionarDatos(product)}"  />
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
+
+        <p:dialog header="Anular producto" widgetVar="dlg2" minHeight="40" width="350" showEffect="fade" modal="true">
+
+            <h:form id = "anular">
+                <p class="m-0">¿Desea anular el siguiente registro?
+                </p>
+                <h:outputText value="Nombre: #{beanProducto.nombreProducto}" />
+                <br></br>
+                <h:outputText value="Cantidad: #{beanProducto.cantidad}" /> 
+                <br></br>
+                <h:outputText value="Precio: #{beanProducto.precio}" /> 
+                <br></br>
+
+                <center> 
+                    <p:commandButton value="Si" update ="@form, tables" styleClass="rounded-button ui-button-danger" onclick="PF('dlg2').close()" actionListener="#{beanProducto.anular}"  />
+                    <p:commandButton value="No" update ="@form, tables" styleClass="rounded-button" onclick="PF('dlg2').close()" actionListener="#{beanProducto.limpiar}"  />
+                </center>
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
