@@ -5,12 +5,135 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <script type = "text/javascript" src = "archivos/scriptCliente.js"></script>
+    </h:head>
+    <body onload = "habilita('formCliente:guardar', 'formCliente:modificar')">
+
+        <h:form id="formCliente">
+            <p:growl id="growl" life="2000" showDetail="true"/>
+            <p:panel header="Clientes">
+
+
+                <h5>Nombre 1</h5>
+                <span class="ui-float-label">
+                    <p:inputText id="nombre1" value="#{beanCliente.nombre1}"/>
+                    <p:outputLabel for="@previous" value="Nombre 1"/>
+                </span>
+
+                <h5>Nombre 2</h5>
+                <span class="ui-float-label">
+                    <p:inputText id="nombre2" value="#{beanCliente.nombre2}"/>
+                    <p:outputLabel for="@previous" value="Nombre 2"/>
+                </span>
+
+                <h5>Apellido 1</h5>
+                <span class="ui-float-label">
+                    <p:inputText id="apellido1" value="#{beanCliente.apellido1}"/>
+                    <p:outputLabel for="@previous" value="Apellido 1"/>
+                </span>
+
+                <h5>Apellido 2</h5>
+                <span class="ui-float-label">
+                    <p:inputText id="apellido2" value="#{beanCliente.apellido2}"/>
+                    <p:outputLabel for="@previous" value="Apellido 2"/>
+                </span>
+
+                <h5>NIT</h5>
+                <span class="ui-float-label">
+                    <p:inputText id="nit" value="#{beanCliente.nit}"/>
+                    <p:outputLabel for="@previous" value="NIT"/>
+                </span>
+
+                <h5>Direccion</h5>
+                <span class="ui-float-label">
+                    <p:inputText id="direccion" value="#{beanCliente.direccion}"/>
+                    <p:outputLabel for="@previous" value="Direccion"/>
+                </span>
+
+                <h5>Telefono</h5>
+                <span class="ui-float-label">
+                    <p:inputText id="telefono" value="#{beanCliente.telefono}"/>
+                    <p:outputLabel for="@previous" value="Telefono"/>
+                </span>
+
+                <br></br>
+                <!-- Botón guardar -->
+                <p:commandButton id = "guardar" value="Guardar" update ="@form,tablaFormulario" styleClass="rounded-button" oncomplete="habilita('formCliente:guardar', 'formCliente:modificar')" actionListener="#{beanCliente.insertar}" />
+                <!-- Botón modificar -->
+                <p:commandButton id = "modificar" value="Modificar" update ="@form,tablaFormulario" oncomplete="habilita('formCliente:guardar', 'formCliente:modificar')" styleClass="rounded-button ui-button-success" actionListener="#{beanCliente.modificar}" />
+
+            </p:panel>
+        </h:form>
+        <!-- Formulario principal -->
+        <h:form id = "tablaFormulario">
+
+            <!-- Listar clientes -->
+            <p:dataTable var = "clienteTabla" value="#{beanCliente.listaCliente}" rowsPerPageTemplate="5,10,15" paginator="true" rows="5">
+
+                <p:column headerText="Nombre 1" sortBy="#{clienteTabla.nombre1}" filterBy="#{clienteTabla.nombre1}">
+                    <h:outputText value="#{clienteTabla.nombre1}" /> 
+                </p:column>
+
+                <p:column headerText="Nombre 2" sortBy="#{clienteTabla.nombre2}" filterBy="#{clienteTabla.nombre2}">
+                    <h:outputText value="#{clienteTabla.nombre2}" /> 
+                </p:column>
+
+                <p:column headerText="Apellido 1" sortBy="#{clienteTabla.apellido1}" filterBy="#{clienteTabla.apellido1}">
+                    <h:outputText value="#{clienteTabla.apellido1}" /> 
+                </p:column>
+
+                <p:column headerText="Apellido 2" sortBy="#{clienteTabla.apellido2}" filterBy="#{clienteTabla.apellido2}">
+                    <h:outputText value="#{clienteTabla.apellido2}" /> 
+                </p:column>
+
+                <p:column headerText="NIT " sortBy="#{clienteTabla.nit}" filterBy="#{clienteTabla.nit}">
+                    <h:outputText value="#{clienteTabla.nit}" /> 
+                </p:column>
+
+                <p:column headerText="Direccion " sortBy="#{clienteTabla.direccion}" filterBy="#{clienteTabla.direccion}">
+                    <h:outputText value="#{clienteTabla.direccion}" /> 
+                </p:column>
+
+                <p:column headerText="Telefono " sortBy="#{clienteTabla.telefono}" filterBy="#{clienteTabla.telefono}">
+                    <h:outputText value="#{clienteTabla.telefono}" /> 
+                </p:column>
+
+                <!-- Botón Modificar RECURSIVO -->
+
+                <p:column headerText="Modificar">
+                    <p:commandButton value="Modificar" update ="formCliente" styleClass="rounded-button ui-button-success" oncomplete="habilita('formCliente:modificar', 'formCliente:guardar')" action="#{beanCliente.seleccionarDatos(clienteTabla)}" />
+                </p:column>
+                <!-- Botón Anular RECURSIVO -->
+                <p:column headerText="Anular">
+                    <p:commandButton value="Anular" update ="anular" styleClass="rounded-button" onclick="PF('dlg2').show()" actionListener="#{beanCliente.seleccionarDatos(clienteTabla)}"  />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+        <p:dialog header="Anular cliente" widgetVar="dlg2" minHeight="40" width="350" showEffect="fade" modal="true">
+
+            <h:form id = "anular">
+                <p class="m-0">¿Desea anular el siguiente registro?
+                </p>
+                <h:outputText value="Nombre: #{beanCliente.nombre1}" />
+                <br></br>
+                <h:outputText value="Apellido #{beanCliente.apellido1}" /> 
+                <br></br>
+                <h:outputText value="NIT: #{beanCliente.nit}" /> 
+                <br></br>
+
+                <center> 
+                    <p:commandButton value="Si" update ="@form, tablaFormulario" styleClass="rounded-button ui-button-danger" onclick="PF('dlg2').close()" actionListener="#{beanCliente.anular}"  />
+                    <p:commandButton value="No" update ="@form, tablaFormulario" styleClass="rounded-button" onclick="PF('dlg2').close()" actionListener="#{beanCliente.limpiar}"  />
+                </center>
+            </h:form>
+        </p:dialog>
+
     </body>
 </html>

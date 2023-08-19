@@ -68,15 +68,21 @@ public class BeanCliente {
 
     }
 
-    public void seleccionarDatos(POJOs.Cliente cliente) {        
+    public void seleccionarDatos(POJOs.Cliente cliente) {
         setIdCliente(cliente.getIdCliente());
         setNombre1(cliente.getNombre1());
+        setNombre2(cliente.getNombre2());
+
         setApellido1(cliente.getApellido1());
+        setApellido2(cliente.getApellido2());
+
         setNit(cliente.getNit());
+        setDireccion(cliente.getDireccion());
+        setTelefono(cliente.getTelefono());
 
     }
-    
-        public void modificar() {
+
+    public void modificar() {
         FacesContext context = FacesContext.getCurrentInstance();
 
         try {
@@ -98,9 +104,8 @@ public class BeanCliente {
         }
 
     }
-        
-        
-            public void anular() {
+
+    public void anular() {
         FacesContext context = FacesContext.getCurrentInstance();
 
         try {
@@ -122,8 +127,6 @@ public class BeanCliente {
         }
 
     }
-
-    
 
     public List getListaCliente() {
         return listaCliente;
