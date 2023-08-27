@@ -20,53 +20,60 @@ and open the template in the editor.
             <p:panel header="Clientes">
 
 
-                <h5>Nombre 1</h5>
-                <span class="ui-float-label">
-                    <p:inputText id="nombre1" value="#{beanCliente.nombre1}"/>
-                    <p:outputLabel for="@previous" value="Nombre 1"/>
-                </span>
+                <h5>Nombre 1</h5>                
+                <p:inputText id="nombre1" value="#{beanCliente.nombre1}" onkeypress="if (event.keyCode === 13) {
+                            foco('formCliente:nombre2');
+                            return false;
+                        }"/>
 
-                <h5>Nombre 2</h5>
-                <span class="ui-float-label">
-                    <p:inputText id="nombre2" value="#{beanCliente.nombre2}"/>
-                    <p:outputLabel for="@previous" value="Nombre 2"/>
-                </span>
 
-                <h5>Apellido 1</h5>
-                <span class="ui-float-label">
-                    <p:inputText id="apellido1" value="#{beanCliente.apellido1}"/>
-                    <p:outputLabel for="@previous" value="Apellido 1"/>
-                </span>
+                <h5>Nombre 2</h5>                
+                <p:inputText id="nombre2" value="#{beanCliente.nombre2}" onkeypress="if (event.keyCode === 13) {
+                            foco('formCliente:apellido1');
+                            return false;
+                        }"/>
 
-                <h5>Apellido 2</h5>
-                <span class="ui-float-label">
-                    <p:inputText id="apellido2" value="#{beanCliente.apellido2}"/>
-                    <p:outputLabel for="@previous" value="Apellido 2"/>
-                </span>
 
-                <h5>NIT</h5>
-                <span class="ui-float-label">
-                    <p:inputText id="nit" value="#{beanCliente.nit}"/>
-                    <p:outputLabel for="@previous" value="NIT"/>
-                </span>
+                <h5>Apellido 1</h5>               
+                <p:inputText id="apellido1" value="#{beanCliente.apellido1}" onkeypress="if (event.keyCode === 13) {
+                            foco('formCliente:apellido2');
+                            return false;
+                        }"/>
 
-                <h5>Direccion</h5>
-                <span class="ui-float-label">
-                    <p:inputText id="direccion" value="#{beanCliente.direccion}"/>
-                    <p:outputLabel for="@previous" value="Direccion"/>
-                </span>
+
+                <h5>Apellido 2</h5>               
+                <p:inputText id="apellido2" value="#{beanCliente.apellido2}" onkeypress="if (event.keyCode === 13) {
+                            foco('formCliente:nit');
+                            return false;
+                        }"/>
+
+
+                <h5>NIT</h5>               
+                <p:inputText id="nit" value="#{beanCliente.nit}" onkeypress="if (event.keyCode === 13) {
+                            foco('formCliente:direccion');
+                            return false;
+                        }"/>
+
+
+                <h5>Direccion</h5>              
+                <p:inputText id="direccion" value="#{beanCliente.direccion}" onkeypress="if (event.keyCode === 13) {
+                            foco('formCliente:telefono');
+                            return false;
+                        }"/>
+
 
                 <h5>Telefono</h5>
-                <span class="ui-float-label">
-                    <p:inputText id="telefono" value="#{beanCliente.telefono}"/>
-                    <p:outputLabel for="@previous" value="Telefono"/>
-                </span>
+                <p:inputText id="telefono" value="#{beanCliente.telefono}" onkeypress="if (event.keyCode === 13) {
+                            focoBoton('formCliente:guardar', 'formCliente:modificar');
+                            return false;
+                        }"/>
+
 
                 <br></br>
                 <!-- Botón guardar -->
-                <p:commandButton id = "guardar" value="Guardar" update ="@form,tablaFormulario" styleClass="rounded-button" oncomplete="habilita('formCliente:guardar', 'formCliente:modificar')" actionListener="#{beanCliente.insertar}" />
+                <p:commandButton id = "guardar" value="Guardar" update ="@form,tablaFormulario" styleClass="rounded-button" oncomplete="habilita('formCliente:guardar', 'formCliente:modificar');foco('formCliente:nombre1')" actionListener="#{beanCliente.insertar}"  />
                 <!-- Botón modificar -->
-                <p:commandButton id = "modificar" value="Modificar" update ="@form,tablaFormulario" oncomplete="habilita('formCliente:guardar', 'formCliente:modificar')" styleClass="rounded-button ui-button-success" actionListener="#{beanCliente.modificar}" />
+                <p:commandButton id = "modificar" value="Modificar" update ="@form,tablaFormulario" oncomplete="habilita('formCliente:guardar', 'formCliente:modificar');foco('formCliente:nombre1')" styleClass="rounded-button ui-button-success" actionListener="#{beanCliente.modificar}" />
 
             </p:panel>
         </h:form>
@@ -107,7 +114,7 @@ and open the template in the editor.
                 <!-- Botón Modificar RECURSIVO -->
 
                 <p:column headerText="Modificar">
-                    <p:commandButton value="Modificar" update ="formCliente" styleClass="rounded-button ui-button-success" oncomplete="habilita('formCliente:modificar', 'formCliente:guardar')" action="#{beanCliente.seleccionarDatos(clienteTabla)}" />
+                    <p:commandButton value="Modificar" update ="formCliente" styleClass="rounded-button ui-button-success" oncomplete="habilita('formCliente:modificar', 'formCliente:guardar');foco('formCliente:nombre1')" action="#{beanCliente.seleccionarDatos(clienteTabla)}" />
                 </p:column>
                 <!-- Botón Anular RECURSIVO -->
                 <p:column headerText="Anular">
