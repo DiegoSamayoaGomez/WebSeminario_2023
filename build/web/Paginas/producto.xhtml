@@ -7,35 +7,33 @@
 
     <h:head>
         <!-- Llama a script -->
-        <script type = "text/javascript" src = "archivos/script.js"></script>
+        <script type = "text/javascript" src = "../archivos/script.js"></script>
     </h:head>
 
-    <!-- Ejectua script -->
-    <h:body onload="habilita('formProducto:guardar', 'formProducto:modificar')">
+    <!-- Ejecuta script -->
+    <h:body onload="habilita('formProducto:guardar', 'formProducto:modificar');foco('formProducto:nombreProducto');#{beanProducto.limpiar()}">
 
 
         <h:form id="formProducto">
             <p:growl id="growl" life="2000" showDetail="true"/>
             <p:panel header="Productos">
-
-
                 <h5>Nombre de Producto</h5>
-                <span class="ui-float-label">
-                    <p:inputText id="nombreProducto" value="#{beanProducto.nombreProducto}"/>
-                    <p:outputLabel for="@previous" value="Nombre Producto"/>
-                </span>
+                <p:inputText id="nombreProducto" value="#{beanProducto.nombreProducto}" onkeypress="if (event.keyCode === 13) {
+                foco('formProducto:cantidad');
+                return false;
+            }"/>
                 <h5>Cantidad</h5>
-                <span class="ui-float-label">
-                    <p:inputNumber id="cantidad" value="#{beanProducto.cantidad}" modifyValueOnWheel="false" />
-                    <p:outputLabel for="@previous"  value="Cantidad"/>
-                </span>
+                <p:inputText id="cantidad" value="#{beanProducto.cantidad}" onkeypress="if (event.keyCode === 13) {
+                            foco('formProducto:precio');
+                            return false;
+                        }"/>
                 <h5>Precio</h5>
-                <span class="ui-float-label">
-                    <p:inputNumber id="precio" value="#{beanProducto.precio}" modifyValueOnWheel="false" />
-                    <p:outputLabel for="@previous"  value="Precio"/>
-                </span>
-                <p:commandButton id = "guardar" value="Guardar" update ="@form,tables" styleClass="rounded-button" oncomplete="habilita('formProducto:guardar', 'formProducto:modificar')" actionListener="#{beanProducto.insertar}" />
-                <p:commandButton id = "modificar" value="Modificar" update ="@form,tables" oncomplete="habilita('formProducto:guardar', 'formProducto:modificar')" styleClass="rounded-button ui-button-success" actionListener="#{beanProducto.modificar}" />
+                <p:inputText id="precio" value="#{beanProducto.precio}" onkeypress="if (event.keyCode === 13) {
+                            focoBoton('formProducto:guardar', 'formProducto:modificar');
+                            return false;
+                        }"/>
+                <p:commandButton id = "guardar" value="Guardar" update ="@form,tables" styleClass="rounded-button" oncomplete="habilita('formProducto:guardar', 'formProducto:modificar');foco('formProducto:nombreProducto')" actionListener="#{beanProducto.insertar}" />
+                <p:commandButton id = "modificar" value="Modificar" update ="@form,tables" oncomplete="habilita('formProducto:guardar', 'formProducto:modificar');foco('formProducto:nombreProducto')" styleClass="rounded-button ui-button-success" actionListener="#{beanProducto.modificar}" />
             </p:panel>
         </h:form>
         <h:form id ="tables">
@@ -55,7 +53,7 @@
                     </p:column>
 
                     <p:column headerText="Modificar">
-                        <p:commandButton value="Modificar" update ="formProducto" styleClass="rounded-button ui-button-success" oncomplete="habilita('formProducto:modificar', 'formProducto:guardar')" action="#{beanProducto.seleccionarDatos(product)}" />
+                        <p:commandButton value="Modificar" update ="formProducto" styleClass="rounded-button ui-button-success" oncomplete="habilita('formProducto:modificar', 'formProducto:guardar');foco('formProducto:nombreProducto')" action="#{beanProducto.seleccionarDatos(product)}" />
                     </p:column>
 
                     <p:column headerText="Anular">
