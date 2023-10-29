@@ -28,6 +28,9 @@ public class BeanProducto {
     private BigDecimal precio;
     private Integer idProducto;
 
+
+    
+    
     public void prueba() {
         System.out.println("Prueba = " + getNombreProducto() + "cantidad = " + getCantidad() + "precio = " + getPrecio());
     }
